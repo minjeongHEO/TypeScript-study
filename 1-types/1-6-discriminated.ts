@@ -1,37 +1,16 @@
 {
-    /**
-     * * Union Types : OR(또는)
-     * 발생할 수 있는 모든 케이스 중 하나만 사용해야 할 때 사용하면 👍
-     */
-    type Direction = "left" | "right" | "up" | "down";
-    function move(direction: Direction) {
-        console.log(direction);
-    }
-    move("down");
-
-    type TileSize = 8 | 16 | 32;
-    const tile: TileSize = 16;
-
     type SuccessState = {
+        result: "successs";
         response: {
             body: string;
         };
     };
     type FailState = {
+        result: "fail";
         reason: string;
     };
     type LoginState = SuccessState | FailState;
 
-    // function login(): SuccessState | FailState {
-    // 🔽
-    // function login(id: string, pw: string): LoginState {
-    //     return {
-    //         response: {
-    //             body: "logged in!",
-    //         },
-    //     };
-    // }
-    // 🔽 보통은 로그인은 promise
     function login(id: string, pw: string): Promise<LoginState> {
         return new Promise((resolve, reject) => {
             //밑의 코드는 예시
@@ -41,12 +20,14 @@
 
                 if (isLoggedIn) {
                     resolve({
+                        result: "successs",
                         response: {
                             body: "logged in!",
                         },
                     });
                 } else {
                     reject({
+                        result: "fail",
                         reason: "Login failed",
                     });
                 }
@@ -60,18 +41,20 @@
 
     // function printLoginState(state: LoginState):void {
     // 아무것도 return 하지않는 void는 생략이 가능하다.
-    function printLoginState(state: LoginState) {
-        // state.response
-        // state.resaon
-        // typeScript는 모른다.
-        // LoginState는 success | fail이기 때문에 코드를 작성하는 시점에는 어떤게 있는지 모름
-
+    function printLoginState2(state: LoginState) {
         //1. in 키워드 사용하기 (비추👎)
         if ("response" in state) {
             console.log(`🎉${state.response.body}`);
         } else {
             console.log(`🎉${state.reason}`);
         }
-        //2.다른 방식은 discriminated.ts 파일 참고!
+
+        //Discriminated Union 🚀
+        //2.LoginState에 공통적인 프로퍼티(result)을 넣어서 사용한다.
+        if (state.result === "successs") {
+            console.log(`🎉${state.response.body}`);
+        } else {
+            console.log(`🎉${state.reason}`);
+        }
     }
 }
