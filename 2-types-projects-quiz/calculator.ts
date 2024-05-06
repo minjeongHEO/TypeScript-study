@@ -14,12 +14,20 @@
         CalculateNum1: number,
         CalculateNum2: number
     ): number {
-        if (type === "add") return CalculateNum1 + CalculateNum2;
-        if (type === "substract") return CalculateNum1 - CalculateNum2;
-        if (type === "multiply") return CalculateNum1 * CalculateNum2;
-        if (type === "divide") return CalculateNum1 / CalculateNum2;
-        if (type === "remainder") return CalculateNum1 % CalculateNum2;
-        throw Error("unknown command");
+        switch (type) {
+            case "add":
+                return CalculateNum1 + CalculateNum2;
+            case "substract":
+                return CalculateNum1 - CalculateNum2;
+            case "multiply":
+                return CalculateNum1 * CalculateNum2;
+            case "divide":
+                return CalculateNum1 / CalculateNum2;
+            case "remainder":
+                return CalculateNum1 % CalculateNum2;
+            default:
+                throw Error("unknown command");
+        }
     }
 
     console.log(calculate("add", 1, 3)); // 4
